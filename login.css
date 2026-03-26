@@ -1,0 +1,209 @@
+:root {
+    --amarelo: #ffcc00;
+    --preto: #0c0c0c;
+    --cinza: #f7f7f7;
+}
+
+.text-yellow {
+    color: var(--amarelo);
+}
+
+
+/* FUNDO DA PÁGINA DE LOGIN */
+
+.login-section {
+    min-height: 90vh;
+    background: linear-gradient(rgba(15, 15, 15, 0.8), rgba(15, 15, 15, 0.8)),
+                url("imagens/belo-edificio-empire-state-brilhante-a-noite.jpg") 
+                center/cover no-repeat;
+    padding: 60px 15px;
+}
+
+
+/* CARD CENTRAL */
+
+.login-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 40px 35px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    animation: fadeIn 0.6s ease;
+}
+
+
+/* INPUTS */
+
+.custom-input {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.custom-input:focus {
+    border-color: var(--amarelo);
+    box-shadow: 0 0 8px rgba(255,204,0,0.6);
+}
+
+
+/* BOTÃO PADRÃO AMARELO */
+
+.btn-yellow {
+    background: var(--amarelo);
+    border: none;
+    padding: 12px;
+    font-weight: 700;
+    color: var(--preto);
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn-yellow:hover {
+    background: #e6b800;
+    transform: scale(1.04);
+}
+
+
+/* ALTERNAÇÃO DE FORMULÁRIOS */
+
+.switch-form a {
+    cursor: pointer;
+    color: var(--amarelo);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.switch-form a:hover {
+    text-decoration: underline;
+}
+
+ /* ===== FOOTER ===== */
+    .footer {
+  background-color: #0c0c0c;
+  font-size: 0.95rem;
+}
+
+.footer h5 {
+  letter-spacing: 0.5px;
+}
+
+.footer p {
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.footer a {
+  color: #bbb;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer a:hover {
+  color: var(--amarelo);
+  padding-left: 3px;
+}
+
+.footer .social-icons a:hover {
+  color: var(--amarelo);
+  transform: scale(1.1);
+  transition: all 0.3s;
+}
+
+
+/* ANIMAÇÃO */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== FIX – RECOMPONDO CLASSES QUE SUMIRAM ===== */
+
+/* Caixa dos formulários */
+.form-box {
+    animation: fadeIn 0.4s ease;
+}
+
+/* Esconde formulário de cadastro / login */
+.hidden, .d-none {
+    display: none !important;
+}
+
+/* Agrupamento dos inputs */
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels */
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+/* Inputs antigos substituídos pela classe custom-input */
+.form-group input {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    transition: border 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: var(--amarelo);
+    box-shadow: 0 0 8px rgba(255,204,0,0.4);
+}
+
+/* Estilo de erro */
+.error {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 3px;
+    display: none;
+}
+
+.error.show {
+    display: block;
+}
+
+/* Borda vermelha quando inválido */
+.error-field {
+    border-color: red !important;
+}
+
+/* Botão genérico */
+.btn-primary,
+.btn-yellow, 
+button.btn-primary {
+    background: var(--amarelo);
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    color: var(--preto);
+    width: 100%;
+    transition: 0.3s;
+}
+
+.btn-primary:hover,
+.btn-yellow:hover {
+    background: #e6b800;
+    transform: scale(1.04);
+}
+
+/* Centralização do card */
+.login-card {
+    text-align: left;
+}
+
+/* Títulos do login/cadastro */
+.subtitle-op1 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}

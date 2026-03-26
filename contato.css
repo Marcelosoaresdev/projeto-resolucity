@@ -1,0 +1,169 @@
+
+/* Paleta */
+:root {
+    --amarelo: #ffcc00;
+    --preto: #0c0c0c;
+    --cinza: #f5f5f5;
+}
+
+
+/* CONTAINER GERAL DA PÁGINA*/
+
+
+body {
+    background-color: var(--cinza);
+}
+
+/* Wrapper */
+.contact-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+
+/* FORMULÁRIO*/
+
+
+.form-container {
+    flex: 1;
+    min-width: 300px;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+/* Campos */
+.form-group label {
+    font-weight: 600;
+    color: var(--preto);
+    margin-bottom: .4rem;
+}
+
+.form-control {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border .3s, box-shadow .3s;
+}
+
+.form-control:focus {
+    border-color: var(--amarelo);
+    box-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
+}
+
+/* Botão */
+button,
+.btn-warning {
+    background: var(--amarelo);
+    color: var(--preto);
+    border: none;
+    padding: 12px;
+    font-weight: 700;
+    border-radius: 8px;
+    letter-spacing: .5px;
+    transition: .3s;
+}
+
+button:hover,
+.btn-warning:hover {
+    background: #e6b800;
+    transform: scale(1.03);
+}
+
+/* Mensagens de erro */
+.error {
+    color: #e63939;
+    display: none;
+    font-size: .85rem;
+    margin-top: .3rem;
+}
+
+.error-field {
+    border: 2px solid #e63939 !important;
+    background-color: #ffecec;
+}
+
+
+/* BLOCO DE INFORMAÇÕES LATERAL*/
+
+.info-container {
+    flex: 1;
+    min-width: 300px;
+    background: var(--preto);
+    color: #eee;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.info-container h4 {
+    color: var(--amarelo);
+    font-weight: 700;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.1rem;
+    font-size: 1.05rem;
+}
+
+.contact-item i {
+    color: var(--amarelo);
+    margin-right: .7rem;
+    font-size: 1.3rem;
+}
+
+/* Ícones sociais */
+.social-icons a {
+    text-decoration: none;
+    margin-right: 1rem;
+    color: var(--amarelo);
+    font-size: 1.7rem;
+    transition: .3s ease;
+}
+
+.social-icons a:hover {
+    transform: translateY(-4px);
+    opacity: .8;
+}
+
+/* TÍTULOS*/
+
+
+.title-op1 {
+    color: var(--preto);
+    font-weight: 700;
+    font-size: 2.3rem;
+}
+
+.subtitle-op1 {
+    font-size: 1.1rem;
+    color: var(--preto);
+    font-weight: 600;
+}
+
+
+/* RESPONSIVIDADE */
+
+
+@media (max-width: 992px) {
+    .contact-wrapper {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 576px) {
+    .form-container,
+    .info-container {
+        padding: 1.4rem;
+    }
+
+    .title-op1 {
+        font-size: 1.9rem;
+    }
+}

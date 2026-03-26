@@ -1,0 +1,239 @@
+/*VARIÁVEIS GLOBAIS */
+:root {
+    --amarelo: #ffcc00;
+    --preto: #0c0c0c;
+    --cinza: #f7f7f7;
+    --cinza-100: #f8f9fa;
+}
+
+/*BASE E CONFIGURAÇÕES GERAIS*/
+body {
+    font-family: "Poppins", sans-serif;
+    scroll-behavior: smooth;
+}
+
+.text-yellow {
+    color: var(--amarelo);
+    font-weight: 700;
+}
+
+/*HEADER SUPERIOR*/
+.top-header {
+    background-color: #fff;
+    font-size: 0.9rem;
+}
+
+.top-header i {
+    font-size: 1rem;
+}
+
+/* Responsividade header superior */
+@media (max-width: 768px) {
+    .contact-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .contact-info div {
+        margin-bottom: 5px;
+    }
+}
+
+/*NAVBAR PRETA*/
+.navbar {
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    transition: background 0.3s ease;
+}
+
+.navbar.scrolled {
+    background: var(--preto);
+}
+
+.navbar-nav .nav-link {
+    color: #fff !important;
+    font-weight: 500;
+    margin: 0 10px;
+    transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--amarelo) !important;
+}
+
+/* Botão login */
+.btn-warning {
+    background-color: var(--amarelo) !important;
+    border: none;
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+.btn-warning:hover {
+    background-color: #e6b800 !important;
+    transform: scale(1.05);
+}
+
+/*HERO PRINCIPAL*/
+.hero {
+    background: linear-gradient(rgba(104,100,100,0.6), rgba(20,20,20,0.6)),
+                url('imagens/belo-edificio-empire-state-brilhante-a-noite.jpg')
+                center/cover no-repeat;
+    color: white;
+    text-align: center;
+    padding: 10rem 1rem;
+}
+
+.hero h1 {
+    font-weight: 700;
+    font-size: 3rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    opacity: 0.9;
+}
+
+.btn-yellow {
+    background-color: var(--amarelo);
+    color: var(--preto);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-yellow:hover {
+    background-color: #e6b800;
+    transform: scale(1.05);
+}
+
+/*DESTAQUES (CARDS AMARELOS) */
+.highlight-section {
+    background-color: var(--amarelo);
+    padding: 5rem 0;
+}
+
+.highlight-section .card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+.highlight-section .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.highlight-section img {
+    height: 220px;
+    object-fit: cover;
+}
+
+/*SOBRE (SECTION)*/
+.about {
+    padding: 5rem 0;
+    background-color: var(--cinza);
+}
+
+.about img {
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/*SERVIÇOS*/
+.services {
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.services i {
+    font-size: 3rem;
+    color: var(--amarelo);
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.services i:hover {
+    transform: scale(1.2);
+}
+
+/* FOOTER*/
+.footer {
+    background-color: #0c0c0c;
+    font-size: 0.95rem;
+    color: #ccc;
+}
+
+.footer h5 {
+    letter-spacing: 0.5px;
+}
+
+.footer a {
+    color: #bbb;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer a:hover {
+    color: var(--amarelo);
+    padding-left: 3px;
+}
+
+.footer .social-icons a:hover {
+    color: var(--amarelo);
+    transform: scale(1.1);
+}
+
+/*HERO COMPACT (usado no sobre.html)*/
+.hero-compact {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.35)),
+                url('imagens/pixnio-4840x3227.jpg') center/cover no-repeat;
+    padding: 3.5rem 0;
+}
+
+/*CARDS DE ESTATÍSTICAS*/
+.stats-card {
+    background: #fff;
+    border-radius: 14px;
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.1);
+}
+
+/*CHARTS PADRONIZADOS (corrige tamanho infinito)*/
+.chart-box, 
+.chart-card, 
+.map-card {
+    min-height: 260px;
+    max-height: 520px;
+    height: 100%;
+    border-radius: 14px;
+    position: relative;
+}
+
+.chart-box canvas,
+.chart-card canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .chart-box, .chart-card {
+        min-height: 300px;
+    }
+}
+
+/*RESPONSIVIDADE EXTRA*/
+@media (max-width: 576px) {
+    .hero h1 {
+        font-size: 2.3rem;
+    }
+    .hero {
+        padding: 6rem 1rem;
+    }
+}
