@@ -1,179 +1,341 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="resolucity">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contato | Resolucity</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contato | Resolucity</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50:  '#F0FDF4', 100: '#D2E8DD', 200: '#B5D5C5', 300: '#7DC39A',
+              400: '#198754', 500: '#146C43', 600: '#0F5132', 700: '#013C31',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
 
-    <!-- Ícones -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Fonte -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script> 
 
-    <!-- Estilos globais -->
-    <link rel="stylesheet" href="../css/style.css">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
-    <!-- Estilo específico da página -->
-    <link rel="stylesheet" href="../css/contato.css">
-
-    <link rel="icon" href="../imagens/logo.png" type="image/x-icon">
+  <link rel="icon" href="../imagens/logo.png" type="image/png">
+  <link rel="stylesheet" href="../css/global.css">
 </head>
+<body class="font-sans bg-base-100 antialiased">
 
-<body>
-
-<!-- ===== HEADER SUPERIOR ===== -->
-<div class="top-header py-2 border-bottom bg-white">
-  <div class="container d-flex justify-content-between align-items-center flex-wrap text-dark">
-    <div class="d-flex align-items-center">
-      <img src="../imagens/logo.png" alt="logo" width="40" class="me-2">
-      <span class="fw-bold fs-5 text-uppercase">Resolucity</span>
-    </div>
-    <div class="contact-info d-flex flex-wrap align-items-center text-secondary small mt-2 mt-md-0">
-      <div class="me-4 d-flex align-items-center">
-        <i class="bi bi-envelope-fill text-warning me-1"></i>
-        <span>contato@resolucity.com</span>
-      </div>
-      <div class="me-4 d-flex align-items-center">
-        <i class="bi bi-telephone-fill text-warning me-1"></i>
-        <span>+55 (24) 99999-9999</span>
-      </div>
-      <div class="d-flex align-items-center">
-        <i class="bi bi-clock-fill text-warning me-1"></i>
-        <span>Seg - Sex: 08h - 17h</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== NAVBAR PRETA ===== -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-  <div class="container">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse justify-content-between" id="menu">
-      <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
-        <li class="nav-item"><a class="nav-link" href="estatisticas.html">Estatísticas</a></li>
-        <li class="nav-item"><a class="nav-link" href="sobre.html">Sobre</a></li>
-        <li class="nav-item"><a class="nav-link active" href="contato.html">Contato</a></li>
-      </ul>
-
-      <a href="login.html" class="btn btn-warning fw-semibold text-dark px-3">Faça Login</a>
-    </div>
-  </div>
-</nav>
-
-<!-- ===== CONTEÚDO ===== -->
-<main class="container py-5">
-
-    <h1 class="title-op1 mb-4 text-center">Entre em Contato</h1>
-
-    <div class="contact-wrapper d-flex flex-wrap justify-content-between">
-
-        <!-- FORMULÁRIO -->
-        <div class="form-container p-4 shadow-sm bg-white rounded">
-            <form id="contactForm">
-                
-                <div class="form-group mb-3">
-                    <label for="name" class="subtitle-op1">Nome</label>
-                    <input type="text" id="name" class="form-control" required>
-                    <div class="error">Informe seu nome</div>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="phone" class="subtitle-op1">Telefone</label>
-                    <input type="tel" id="phone" class="form-control" placeholder="(00) 90000-0000" required>
-                    <div class="error">Telefone inválido</div>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="email" class="subtitle-op1">E-mail</label>
-                    <input type="email" id="email" class="form-control" required>
-                    <div class="error">E-mail inválido</div>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="message" class="subtitle-op1">Mensagem</label>
-                    <textarea id="message" rows="5" class="form-control" required></textarea>
-                    <div class="error">Digite uma mensagem</div>
-                </div>
-
-                <button class="btn btn-warning w-100 mt-2 fw-bold">Enviar Mensagem</button>
-
-            </form>
+  <!-- ===================== NAVBAR ===================== -->
+  <div class="fixed top-0 w-full z-50 bg-base-100/80 backdrop-blur-lg border-b border-base-content/5" id="navbar">
+    <div class="navbar max-w-[1184px] mx-auto px-4 lg:px-8">
+      <div class="navbar-start">
+        <div class="dropdown lg:hidden">
+          <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-square">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </div>
+          <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-56 p-2 shadow-lg border border-base-300">
+            <li><a href="../../index.html">Início</a></li>
+            <li><a href="categorias.html">Categorias</a></li>
+            <li><a href="estatisticas.html">Estatísticas</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="contato.html" class="font-medium text-primary-700">Contato</a></li>
+            <div class="divider my-1"></div>
+            <li><a href="relatar.html" class="btn btn-primary btn-sm text-white justify-center">Fazer Relato</a></li>
+            <li class="mt-1"><a href="login.html" class="btn btn-outline btn-primary btn-sm justify-center">Entrar</a></li>
+          </ul>
         </div>
-
-        <!-- INFO -->
-        <div class="info-container p-4 rounded bg-black text-light shadow-sm">
-            <h4 class="text-warning mb-4">Informações</h4>
-
-            <div class="contact-item mb-3">
-                <i class="bi bi-telephone text-warning me-2"></i> (24) 99912-3456
-            </div>
-
-            <div class="contact-item mb-3">
-                <i class="bi bi-envelope text-warning me-2"></i> contato@resolucity.com
-            </div>
-
-            <div class="contact-item mb-3">
-                <i class="bi bi-geo-alt text-warning me-2"></i> Volta Redonda - RJ
-            </div>
-
-            <div class="social-icons mt-3">
-                <a href="#" class="text-warning fs-4 me-3"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-warning fs-4 me-3"><i class="fab fa-whatsapp"></i></a>
-                <a href="#" class="text-warning fs-4"><i class="fab fa-linkedin"></i></a>
-            </div>
-
-        </div>
-    </div>
-
-</main>
-
-<!-- ===== FOOTER ===== -->
-<footer class="footer text-light pt-5">
-  <div class="container">
-    <div class="row gy-4">
-
-      <div class="col-md-4">
-        <h5 class="text-warning fw-bold mb-3">Sobre o Resolucity</h5>
-        <p>Plataforma digital para relatos urbanos, promovendo transparência e participação cidadã.</p>
+        <a href="../../index.html" class="flex items-center gap-2.5 ml-1">
+          <div class="w-9 h-9 rounded-lg bg-primary-500 flex items-center justify-center">
+            <i data-lucide="building-2" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-primary-700 font-bold text-lg tracking-tight">RESOLUCITY</span>
+        </a>
       </div>
-
-      <div class="col-md-4">
-        <h5 class="text-warning fw-bold mb-3">Links Úteis</h5>
-        <ul class="list-unstyled">
-          <li><a href="index.html">Início</a></li>
-          <li><a href="estatisticas.html">Estatísticas</a></li>
-          <li><a href="sobre.html">Sobre</a></li>
-          <li><a href="contato.html">Contato</a></li>
+      <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal gap-1">
+          <li><a href="../../index.html" class="rounded-lg">Início</a></li>
+          <li><a href="categorias.html" class="rounded-lg">Categorias</a></li>
+          <li><a href="estatisticas.html" class="rounded-lg">Estatísticas</a></li>
+          <li><a href="sobre.html" class="rounded-lg">Sobre</a></li>
+          <li><a href="contato.html" class="rounded-lg font-medium bg-primary-100 text-primary-700">Contato</a></li>
         </ul>
       </div>
+      <div class="navbar-end gap-2">
+        <a href="login.html" class="btn btn-outline btn-primary btn-sm hidden sm:inline-flex">
+          <i data-lucide="log-in" class="w-4 h-4"></i> Entrar
+        </a>
+        <a href="relatar.html" class="btn btn-primary btn-sm hidden sm:inline-flex">
+          Fazer Relato <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </div>
 
-      <div class="col-md-4">
-        <h5 class="text-warning fw-bold mb-3">Contato</h5>
-        <p><i class="bi bi-envelope-fill me-2 text-warning"></i> contato@resolucity.com</p>
-        <p><i class="bi bi-telephone-fill me-2 text-warning"></i> +55 24 99999-9999</p>
+  <main>
+    <!-- ===================== HERO ===================== -->
+    <section class="relative pt-[72px] overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-primary-50/50"></div>
+      <div class="absolute top-24 right-0 w-[400px] h-[400px] bg-primary-100/30 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-primary-100/20 rounded-full blur-3xl animate-pulse" style="animation-delay:2s"></div>
+
+      <div class="relative max-w-[1184px] mx-auto px-6 lg:px-10 pt-14 lg:pt-20 pb-12 lg:pb-16">
+        <div class="max-w-2xl mx-auto text-center" data-aos="fade-up" data-aos-duration="700">
+          <div class="badge badge-lg gap-2 bg-primary-100 text-primary-600 border-0 mb-5 px-4 py-3 font-medium">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            Fale Conosco
+          </div>
+
+          <h1 class="text-4xl lg:text-5xl font-bold text-primary-700 leading-tight mb-4">
+            Entre em Contato
+          </h1>
+          <p class="text-base lg:text-lg text-gray-500 leading-relaxed">
+            Tem alguma dúvida, sugestão ou quer saber mais sobre o Resolucity? Nossa equipe está pronta para te atender.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTENT ===================== -->
+    <section class="max-w-[1184px] mx-auto px-6 lg:px-10 pb-20">
+      <div class="flex flex-col lg:flex-row gap-8" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- CONTACT FORM -->
+        <div class="card bg-base-100 border border-base-300 shadow-sm flex-1">
+          <div class="card-body">
+            <h2 class="card-title text-gray-800 mb-2">Envie sua mensagem</h2>
+
+            <form id="contactForm" novalidate>
+
+              <!-- Nome -->
+              <div class="form-control mb-4">
+                <label class="label" for="name">
+                  <span class="label-text font-semibold">Nome</span>
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Seu nome completo"
+                  class="input input-bordered w-full"
+                >
+                <span id="nameError" class="error"></span>
+              </div>
+
+              <!-- Telefone -->
+              <div class="form-control mb-4">
+                <label class="label" for="phone">
+                  <span class="label-text font-semibold">Telefone</span>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  placeholder="(00) 90000-0000"
+                  class="input input-bordered w-full"
+                >
+                <span id="phoneError" class="error"></span>
+              </div>
+
+              <!-- E-mail -->
+              <div class="form-control mb-4">
+                <label class="label" for="email">
+                  <span class="label-text font-semibold">E-mail</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="seu@email.com"
+                  class="input input-bordered w-full"
+                >
+                <span id="emailError" class="error"></span>
+              </div>
+
+              <!-- Mensagem -->
+              <div class="form-control mb-4">
+                <label class="label" for="message">
+                  <span class="label-text font-semibold">Mensagem</span>
+                </label>
+                <textarea
+                  id="message"
+                  rows="5"
+                  placeholder="Escreva sua mensagem aqui..."
+                  class="textarea textarea-bordered w-full resize-none"
+                ></textarea>
+                <span id="messageError" class="error"></span>
+              </div>
+
+              <!-- Submit -->
+              <button type="submit" class="btn btn-primary w-full mt-2">
+                <i data-lucide="send" class="w-4 h-4"></i>
+                Enviar Mensagem
+              </button>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- INFO PANEL -->
+        <div class="w-full lg:w-96 bg-primary-600 rounded-2xl p-8 text-white flex flex-col">
+          <h3 class="text-xl font-bold text-white mb-8">Informações de Contato</h3>
+
+          <div class="space-y-6 flex-1">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+                <i data-lucide="phone" class="w-5 h-5 text-white"></i>
+              </div>
+              <div>
+                <p class="text-white/60 text-xs font-medium uppercase tracking-wide mb-0.5">Telefone</p>
+                <p class="text-white font-medium text-sm">(24) 99912-3456</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+                <i data-lucide="mail" class="w-5 h-5 text-white"></i>
+              </div>
+              <div>
+                <p class="text-white/60 text-xs font-medium uppercase tracking-wide mb-0.5">E-mail</p>
+                <p class="text-white font-medium text-sm">contato@resolucity.com</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+                <i data-lucide="map-pin" class="w-5 h-5 text-white"></i>
+              </div>
+              <div>
+                <p class="text-white/60 text-xs font-medium uppercase tracking-wide mb-0.5">Localização</p>
+                <p class="text-white font-medium text-sm">Volta Redonda — RJ</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+                <i data-lucide="clock" class="w-5 h-5 text-white"></i>
+              </div>
+              <div>
+                <p class="text-white/60 text-xs font-medium uppercase tracking-wide mb-0.5">Atendimento</p>
+                <p class="text-white font-medium text-sm">Seg — Sex, 08h às 17h</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="border-t border-white/15 my-8"></div>
+
+          <div>
+            <p class="text-white/60 text-xs font-medium uppercase tracking-wide mb-4">Redes Sociais</p>
+            <div class="flex gap-3">
+              <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center hover:bg-white/25 transition-colors">
+                <i data-lucide="instagram" class="w-5 h-5 text-white"></i>
+              </a>
+              <a href="#" aria-label="WhatsApp" class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center hover:bg-white/25 transition-colors">
+                <i data-lucide="message-circle" class="w-5 h-5 text-white"></i>
+              </a>
+              <a href="#" aria-label="LinkedIn" class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center hover:bg-white/25 transition-colors">
+                <i data-lucide="linkedin" class="w-5 h-5 text-white"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <div class="wave-wrapper">
+    <svg class="wave-divider" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#146C43"/>
+    </svg>
+  </div>
+
+  <footer class="bg-gradient-to-b from-primary-500 to-primary-600">
+    <div class="max-w-[1184px] mx-auto px-6 lg:px-10">
+
+      <!-- Newsletter -->
+      <div class="text-center py-12 border-b border-white/15">
+        <h3 class="text-xl font-bold text-white mb-2">Receba novidades por e-mail</h3>
+        <p class="text-white/60 text-sm mb-6">Fique por dentro das atualizações da plataforma.</p>
+        <form class="join max-w-md mx-auto" onsubmit="event.preventDefault()">
+          <input type="email" placeholder="Seu melhor e-mail" class="input join-item bg-white text-gray-800 placeholder-gray-400 flex-1 border-0">
+          <button type="submit" class="btn join-item bg-primary-700 text-white border-0 hover:bg-primary-700/80 gap-2">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            Enviar
+          </button>
+        </form>
       </div>
 
+      <!-- Links + Info -->
+      <div class="py-10 grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div>
+          <div class="flex items-center gap-2.5 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+              <i data-lucide="building-2" class="w-4 h-4 text-white"></i>
+            </div>
+            <span class="text-white font-bold text-base">RESOLUCITY</span>
+          </div>
+          <p class="text-white/60 text-sm leading-relaxed">
+            Plataforma de engajamento cívico para relatar problemas urbanos e promover transparência.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-white font-semibold text-sm mb-4">Navegação</h4>
+          <div class="grid grid-cols-2 gap-2">
+            <a href="../../index.html" class="text-white/60 text-sm hover:text-white transition-colors">Início</a>
+            <a href="categorias.html" class="text-white/60 text-sm hover:text-white transition-colors">Categorias</a>
+            <a href="estatisticas.html" class="text-white/60 text-sm hover:text-white transition-colors">Estatísticas</a>
+            <a href="sobre.html" class="text-white/60 text-sm hover:text-white transition-colors">Sobre</a>
+            <a href="contato.html" class="text-white/60 text-sm hover:text-white transition-colors">Contato</a>
+            <a href="relatar.html" class="text-white/60 text-sm hover:text-white transition-colors">Fazer Relato</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-white font-semibold text-sm mb-4">Redes Sociais</h4>
+          <div class="flex gap-3">
+            <a href="#" aria-label="Instagram" class="btn btn-ghost btn-sm btn-square bg-white/10 hover:bg-white/20 text-white border-0">
+              <i data-lucide="instagram" class="w-5 h-5"></i>
+            </a>
+            <a href="#" aria-label="LinkedIn" class="btn btn-ghost btn-sm btn-square bg-white/10 hover:bg-white/20 text-white border-0">
+              <i data-lucide="linkedin" class="w-5 h-5"></i>
+            </a>
+            <a href="#" aria-label="Email" class="btn btn-ghost btn-sm btn-square bg-white/10 hover:bg-white/20 text-white border-0">
+              <i data-lucide="mail" class="w-5 h-5"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="py-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <p class="text-white/50 text-xs">&copy; 2026 Resolucity. Todos os direitos reservados.</p>
+        <p class="text-white/40 text-xs">Cidadania em Ação</p>
+      </div>
     </div>
+  </footer>
 
-    <hr class="mt-4 border-secondary">
-
-    <p class="text-center small text-secondary mb-0">
-      © 2025 <span class="text-warning">Resolucity</span> — Todos os direitos reservados.
-    </p>
-  </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+  <!-- ===================== SCRIPTS ===================== -->
+  <script src="../js/contato.js"></script>
+  <script>
+    AOS.init({ once: true, duration: 600 });
+    lucide.createIcons();
+  </script>
 </body>
 </html>
+
+
+
 
