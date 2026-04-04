@@ -272,26 +272,31 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 
     if (hasError) return;
 
-    // Salva o novo usuário
-    const newUser = {
-        name,
-        email,
-        password
-    };
+    try {
+        const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nome: name, email, senha: password })
+        });
 
-    db.saveUser(newUser);
-    
-    showSuccessModal(
-        'Cadastro realizado!',
-        'Sua conta foi criada com sucesso. Faça login para continuar.',
-        () => {
-            // Limpa o formulário
-            document.getElementById('registerForm').reset();
-            // Volta para o login
-            document.getElementById('register-form').classList.add('hidden');
-            document.getElementById('login-form').classList.remove('hidden');
+        const data = await response.json();
+
+        if (!response.ok) {
+            showError('register-email', data.message || 'Erro ao criar conta');
+            return;
         }
-    );
+
+        showSuccessModal(
+            'Cadastro realizado!',
+            'Sua conta foi criada com sucesso. Faça login para continuar.',
+            () => {
+                document.getElementById('registerForm').reset();
+                showLogin();
+            }
+        );
+    } catch (err) {
+        showError('register-email', 'Erro de conexão com o servidor');
+    }
 });
 
 // Menu mobile toggle
