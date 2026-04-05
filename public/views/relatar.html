@@ -44,50 +44,52 @@
 </head>
 <body class="font-sans bg-base-100 antialiased">
 
-  <!-- NAVBAR -->
-  <div class="fixed top-0 w-full z-50 bg-base-100/80 backdrop-blur-lg border-b border-base-content/5 transition-shadow duration-300" id="navbar">
-    <div class="navbar max-w-[1184px] mx-auto px-4 lg:px-8">
-
+  <!-- ===================== NAVBAR ===================== -->
+  <div id="navbar" class="navbar fixed top-0 z-50 bg-base-100/80 backdrop-blur-lg border-b border-base-200 transition-shadow duration-300 min-h-[72px]">
       <div class="navbar-start">
-        <div class="dropdown lg:hidden">
-          <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-square">
-            <i data-lucide="menu" class="w-5 h-5"></i>
-          </div>
-          <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-56 p-2 shadow-lg border border-base-300">
-            <li><a href="/">Início</a></li>
-            <li><a href="/categorias">Categorias</a></li>
-            <li><a href="/estatisticas">Estatísticas</a></li>
-            <li><a href="/sobre">Sobre</a></li>
-            <li><a href="/contato">Contato</a></li>
-            <div class="divider my-1"></div>
-            <li><a href="/login" class="btn btn-outline btn-primary btn-sm justify-center">Entrar</a></li>
-          </ul>
-        </div>
-        <a href="/" class="flex items-center gap-2.5 ml-1">
-          <div class="w-9 h-9 rounded-lg bg-primary-500 flex items-center justify-center">
-            <i data-lucide="building-2" class="w-5 h-5 text-white"></i>
-          </div>
-          <span class="text-primary-700 font-bold text-lg tracking-tight">RESOLUCITY</span>
-        </a>
+          <a href="/" class="flex items-center gap-2.5 pl-4 lg:pl-6">
+              <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
+                  <i data-lucide="building-2" class="w-5 h-5 text-white"></i>
+              </div>
+              <span class="text-primary-700 font-bold text-lg tracking-tight">RESOLUCITY</span>
+          </a>
       </div>
 
       <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal gap-1">
-          <li><a href="/" class="rounded-lg">Início</a></li>
-          <li><a href="/categorias" class="rounded-lg">Categorias</a></li>
-          <li><a href="/estatisticas" class="rounded-lg">Estatísticas</a></li>
-          <li><a href="/sobre" class="rounded-lg">Sobre</a></li>
-          <li><a href="/contato" class="rounded-lg">Contato</a></li>
-        </ul>
+          <ul class="menu menu-horizontal gap-1 px-1">
+              <li><a href="/" class="rounded-lg text-sm text-base-content/70 hover:bg-base-200">Início</a></li>
+              <li><a href="/categorias" class="rounded-lg text-sm text-base-content/70 hover:bg-base-200">Categorias</a></li>
+              <li><a href="/estatisticas" class="rounded-lg text-sm text-base-content/70 hover:bg-base-200">Estatísticas</a></li>
+              <li><a href="/sobre" class="rounded-lg text-sm text-base-content/70 hover:bg-base-200">Sobre</a></li>
+              <li><a href="/contato" class="rounded-lg text-sm text-base-content/70 hover:bg-base-200">Contato</a></li>
+          </ul>
       </div>
 
-      <div class="navbar-end gap-2">
-        <a href="/login" class="btn btn-outline btn-primary btn-sm hidden sm:inline-flex">
-          <i data-lucide="log-in" class="w-4 h-4"></i> Entrar
-        </a>
-      </div>
+      <div id="navbar-auth" class="navbar-end gap-3 pr-4 lg:pr-6">
+          <a href="/login" class="btn btn-sm btn-outline border-primary-200 text-primary-500 hover:bg-primary-50 hover:border-primary-300 hover:text-primary-600 hidden sm:flex gap-2 rounded-xl normal-case">
+              <i data-lucide="log-in" class="w-4 h-4"></i>
+              Entrar
+          </a>
 
-    </div>
+          <!-- Mobile dropdown -->
+          <div class="dropdown dropdown-end lg:hidden">
+              <button tabindex="0" class="btn btn-ghost btn-sm p-2 rounded-lg" aria-label="Menu">
+                  <i data-lucide="menu" class="w-5 h-5 text-base-content/70"></i>
+              </button>
+              <ul tabindex="0" class="dropdown-content menu bg-base-100/95 backdrop-blur-lg rounded-box z-50 w-56 p-2 shadow-lg border border-base-200 mt-2">
+                  <li><a href="/" class="rounded-lg text-sm">Início</a></li>
+                  <li><a href="/categorias" class="rounded-lg text-sm">Categorias</a></li>
+                  <li><a href="/estatisticas" class="rounded-lg text-sm">Estatísticas</a></li>
+                  <li><a href="/sobre" class="rounded-lg text-sm">Sobre</a></li>
+                  <li><a href="/contato" class="rounded-lg text-sm">Contato</a></li>
+                  <li class="border-t border-base-200 mt-2 pt-2">
+                      <a href="/login" class="rounded-xl border border-primary-200 text-primary-500 justify-center">
+                          <i data-lucide="log-in" class="w-4 h-4"></i> Entrar
+                      </a>
+                  </li>
+              </ul>
+          </div>
+      </div>
   </div>
 
   <!-- HERO -->
@@ -268,7 +270,7 @@
               Conectamos cidadãos e administração pública para promover melhorias urbanas por meio de relatos e dados transparentes.
             </p>
             <!-- Newsletter join -->
-            <div class="join w-full">
+            <div class="join w-full max-w-md">
               <input type="email" placeholder="Seu e-mail"
                 class="join-item input input-sm bg-white/10 border-white/20 text-white placeholder:text-primary-200 focus:border-white/50 flex-1 min-w-0" />
               <button class="join-item btn btn-sm bg-white text-primary-600 hover:bg-primary-50 border-0 flex-shrink-0">
@@ -358,7 +360,7 @@
     AOS.init({ once: true, duration: 600 });
     lucide.createIcons();
   </script>
-
+  <script src="../js/navbar.js"></script>
 </body>
 </html>
 

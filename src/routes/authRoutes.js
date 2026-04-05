@@ -1,9 +1,12 @@
 import { Router } from 'express';
 import authController from '../controllers/authController.js';
 
-const userRoutes = Router();
+const authRoutes = Router();
 
-userRoutes.post("/register", authController.createUser);
-userRoutes.get("/" , authController.listUsers);
+authRoutes.post('/register', authController.register);
+authRoutes.post('/login',    authController.login);
+authRoutes.post('/logout',   authController.logout);
+authRoutes.get('/me',        authController.me);
+authRoutes.get('/',          authController.listUsers);
 
-export default userRoutes;
+export default authRoutes;

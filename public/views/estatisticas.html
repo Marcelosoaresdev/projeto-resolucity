@@ -59,7 +59,7 @@
             </ul>
         </div>
 
-        <div class="navbar-end gap-3 pr-4 lg:pr-6">
+        <div id="navbar-auth" class="navbar-end gap-3 pr-4 lg:pr-6">
             <a href="/login" class="btn btn-sm btn-outline border-primary-200 text-primary-500 hover:bg-primary-50 hover:border-primary-300 hover:text-primary-600 hidden sm:flex gap-2 rounded-xl normal-case">
                 <i data-lucide="log-in" class="w-4 h-4"></i>
                 Entrar
@@ -85,7 +85,7 @@
                             Fazer Relato <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </a>
                     </li>
-                    <li>
+                    <li class="mt-2">
                         <a href="/login" class="rounded-xl border border-primary-200 text-primary-500 justify-center">
                             <i data-lucide="log-in" class="w-4 h-4"></i> Entrar
                         </a>
@@ -200,8 +200,8 @@
             <div class="text-center py-12 border-b border-white/15">
                 <h3 class="text-xl font-bold text-white mb-2">Receba novidades por e-mail</h3>
                 <p class="text-white/60 text-sm mb-6">Fique por dentro das atualizações da plataforma.</p>
-                <form class="join max-w-md mx-auto" onsubmit="event.preventDefault()">
-                    <input type="email" placeholder="Seu melhor e-mail" class="input join-item bg-white text-gray-800 placeholder-gray-400 flex-1 border-0">
+                <form class="join w-full max-w-md mx-auto" onsubmit="event.preventDefault()">
+                    <input type="email" placeholder="Seu melhor e-mail" class="input join-item bg-white text-gray-800 placeholder-gray-400 flex-1 min-w-0 border-0">
                     <button type="submit" class="btn join-item bg-primary-700 text-white border-0 hover:bg-primary-700/80 gap-2">
                         <i data-lucide="send" class="w-4 h-4"></i>
                         Enviar
@@ -286,6 +286,7 @@
         });
     </script>
     <script src="../js/chart.js"></script>
+    <script src="../js/navbar.js"></script>
 </body>
 </html>
 

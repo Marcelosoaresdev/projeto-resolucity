@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import session from 'express-session';
 import authRoutes from './routes/authRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
 
@@ -10,6 +11,14 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(express.json());
+
+// Sessão: mantém o usuário logado entre requisições
+app.use(session({
+    secret: 'resolucity-secret',  // chave para assinar o cookie (trocar em produção)
+    resave: false,                // não salva a sessão se ela não foi modificada
+    saveUninitialized: false,     // não cria sessão para quem não está logado
+    cookie: { httpOnly: true }    // cookie não acessível via JavaScript no browser
+}));
 app.use(express.static(path.join(__dirname, '../')));
 app.use(express.static(path.join(__dirname, '../public')));
 

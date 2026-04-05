@@ -43,6 +43,11 @@
    Global Styles — Complementary to Tailwind + DaisyUI
    ============================================ */
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -131,6 +136,10 @@ html {
   display: none;
   margin-top: 4px;
   line-height: 1.4;
+}
+
+.error.show {
+  display: block;
 }
 
 .error-field {

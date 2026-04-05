@@ -1,93 +1,6 @@
-//Simulação do banco de dados
-
-class UserDatabase {
-    constructor() {
-        this.storageKey = 'resolucity_users';
-        this.currentUserKey = 'resolucity_current_user';
-    }
-
-    // Inicializa o banco de dados se não existir
-    init() {
-        if (!localStorage.getItem(this.storageKey)) {
-            localStorage.setItem(this.storageKey, JSON.stringify([]));
-        }
-    }
-
-    // Retorna todos os usuários
-    getAllUsers() {
-        return JSON.parse(localStorage.getItem(this.storageKey) || '[]');
-    }
-
-    // Salva um novo usuário
-    saveUser(user) {
-        const users = this.getAllUsers();
-        users.push({
-            id: Date.now(),
-            ...user,
-            createdAt: new Date().toISOString()
-        });
-        localStorage.setItem(this.storageKey, JSON.stringify(users));
-        return true;
-    }
-
-    // Verifica se o email já existe
-    emailExists(email) {
-        const users = this.getAllUsers();
-        return users.some(user => user.email.toLowerCase() === email.toLowerCase());
-    }
-
-    // Busca usuário por email e senha
-    findUser(email, password) {
-        const users = this.getAllUsers();
-        return users.find(user => 
-            user.email.toLowerCase() === email.toLowerCase() && 
-            user.password === password
-        );
-    }
-
-    // Salva o usuário logado
-    setCurrentUser(user) {
-        const userToStore = { ...user };
-        delete userToStore.password; // Não armazena senha no usuário atual
-        localStorage.setItem(this.currentUserKey, JSON.stringify(userToStore));
-    }
-
-    // Retorna o usuário logado
-    getCurrentUser() {
-        return JSON.parse(localStorage.getItem(this.currentUserKey) || 'null');
-    }
-
-    // Remove o usuário logado (logout)
-    clearCurrentUser() {
-        localStorage.removeItem(this.currentUserKey);
-    }
-}
-
-// Instancia o banco de dados
-const db = new UserDatabase();
-db.init();
-
-//Consumo da api, validação de email
-
-async function validateEmailAPI(email) {
-    try {
-        // Usando a API do Hunter.io para validar formato
-        // Esta é uma validação adicional via API pública
-        const response = await fetch(`https://api.eva.pingutil.com/email?email=${encodeURIComponent(email)}`);
-        const data = await response.json();
-        
-        return {
-            valid: data.status === 'success' && data.data.deliverable,
-            message: data.status === 'success' ? 'Email válido' : 'Email pode ser inválido'
-        };
-    } catch (error) {
-        // Se a API falhar, aceita a validação local
-        console.log('API de validação indisponível, usando validação local');
-        return { valid: true, message: 'Validação local' };
-    }
-}
-
-//Validações gerais
+// ================================================
+// VALIDAÇÕES
+// ================================================
 
 function validateEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -102,98 +15,51 @@ function validateName(name) {
     return name.trim().length >= 3;
 }
 
+// ================================================
+// EXIBIÇÃO DE ERROS INLINE (abaixo dos campos)
+// ================================================
+
 function showError(fieldId, message) {
-    const field = document.getElementById(fieldId);
-    const errorElement = document.getElementById(`${fieldId}-error`);
-    
-    field.classList.add('error-field');
-    errorElement.textContent = message;
-    errorElement.classList.add('show');
+    const input = document.getElementById(fieldId);
+    const errorSpan = document.getElementById(`${fieldId}-error`);
+
+    input.classList.add('input-error');
+    errorSpan.textContent = message;
+    errorSpan.classList.add('show'); // necessário para o CSS exibir o texto
 }
 
 function clearError(fieldId) {
-    const field = document.getElementById(fieldId);
-    const errorElement = document.getElementById(`${fieldId}-error`);
-    
-    field.classList.remove('error-field');
-    errorElement.textContent = '';
-    errorElement.classList.remove('show');
+    const input = document.getElementById(fieldId);
+    const errorSpan = document.getElementById(`${fieldId}-error`);
+
+    input.classList.remove('input-error');
+    errorSpan.textContent = '';
+    errorSpan.classList.remove('show');
 }
 
 function clearAllErrors(formId) {
     const form = document.getElementById(formId);
-    const errorFields = form.querySelectorAll('.error-field');
-    const errorMessages = form.querySelectorAll('.error.show');
-    
-    errorFields.forEach(field => field.classList.remove('error-field'));
-    errorMessages.forEach(error => {
-        error.textContent = '';
-        error.classList.remove('show');
+    form.querySelectorAll('.input-error').forEach(input => input.classList.remove('input-error'));
+    form.querySelectorAll('.error').forEach(span => {
+        span.textContent = '';
+        span.classList.remove('show');
     });
 }
 
-//Modal de sucesso
+// ================================================
+// FORMULÁRIO DE LOGIN
+// ================================================
 
-function showSuccessModal(title, message, callback) {
-    const modal = document.getElementById('success-modal');
-    const titleElement = document.getElementById('success-title');
-    const messageElement = document.getElementById('success-message');
-    
-    titleElement.textContent = title;
-    messageElement.textContent = message;
-    modal.style.display = 'flex';
-    
-    const closeButton = document.getElementById('close-modal');
-    closeButton.onclick = () => {
-        modal.style.display = 'none';
-        if (callback) callback();
-    };
-}
-
-//Alternar entre login e cadastro
-
-document.addEventListener('DOMContentLoaded', function() {
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-    const showRegisterBtn = document.getElementById('show-register');
-    const showLoginBtn = document.getElementById('show-login');
-
-    showRegisterBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        loginForm.classList.add('d-none');
-        registerForm.classList.remove('d-none');
-        clearAllErrors('loginForm');
-    });
-
-    showLoginBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        registerForm.classList.add('d-none');
-        loginForm.classList.remove('d-none');
-        clearAllErrors('registerForm');
-    });
-
-    // Verifica se já há usuário logado
-    const currentUser = db.getCurrentUser();
-    if (currentUser) {
-        showSuccessModal(
-            'Bem-vindo de volta!',
-            `Você já está logado como ${currentUser.name}.`,
-        );
-    }
-});
-
-//Formulário de login
-
-document.getElementById('loginForm').addEventListener('submit', async function(e) {
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
     clearAllErrors('loginForm');
 
     const email = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value;
-    
+    const senha = document.getElementById('login-password').value;
+
+    // 1. Valida os campos antes de enviar
     let hasError = false;
 
-    // Validações
     if (!email) {
         showError('login-email', 'Por favor, insira seu e-mail');
         hasError = true;
@@ -202,51 +68,56 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         hasError = true;
     }
 
-    if (!password) {
+    if (!senha) {
         showError('login-password', 'Por favor, insira sua senha');
         hasError = true;
     }
 
     if (hasError) return;
 
-    // Busca o usuário no banco
-    const user = db.findUser(email, password);
+    // 2. Envia para o backend
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, senha })
+        });
 
-    if (!user) {
-        showError('login-email', 'E-mail ou senha incorretos');
-        showError('login-password', 'E-mail ou senha incorretos');
-        return;
-    }
+        const data = await response.json();
 
-    // Login bem-sucedido
-    db.setCurrentUser(user);
-    
-    showSuccessModal(
-        'Login realizado!',
-        `Bem-vindo de volta, ${user.name}!`,
-        () => {
-            window.location.href = 'index.html';
+        // 3a. Credenciais erradas: mostra erro abaixo do campo de senha
+        if (!response.ok) {
+            showError('login-password', data.message);
+            return;
         }
-    );
+
+        // 3b. Login ok: redireciona para a página inicial
+        window.location.href = '/';
+
+    } catch (err) {
+        showError('login-password', 'Erro de conexão com o servidor');
+    }
 });
 
-//Formulário de cadastro
+// ================================================
+// FORMULÁRIO DE CADASTRO
+// ================================================
 
-document.getElementById('registerForm').addEventListener('submit', async function(e) {
+document.getElementById('registerForm').addEventListener('submit', async function (e) {
     e.preventDefault();
     clearAllErrors('registerForm');
 
-    const name = document.getElementById('register-name').value.trim();
+    const nome  = document.getElementById('register-name').value.trim();
     const email = document.getElementById('register-email').value.trim();
-    const password = document.getElementById('register-password').value;
-    
+    const senha = document.getElementById('register-password').value;
+
+    // 1. Valida os campos antes de enviar
     let hasError = false;
 
-    // Validações
-    if (!name) {
+    if (!nome) {
         showError('register-name', 'Por favor, insira seu nome completo');
         hasError = true;
-    } else if (!validateName(name)) {
+    } else if (!validateName(nome)) {
         showError('register-name', 'Nome deve ter pelo menos 3 caracteres');
         hasError = true;
     }
@@ -257,35 +128,35 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     } else if (!validateEmail(email)) {
         showError('register-email', 'E-mail inválido');
         hasError = true;
-    } else if (db.emailExists(email)) {
-        showError('register-email', 'Este e-mail já está cadastrado');
-        hasError = true;
     }
 
-    if (!password) {
+    if (!senha) {
         showError('register-password', 'Por favor, insira uma senha');
         hasError = true;
-    } else if (!validatePassword(password)) {
+    } else if (!validatePassword(senha)) {
         showError('register-password', 'Senha deve ter pelo menos 6 caracteres');
         hasError = true;
     }
 
     if (hasError) return;
 
+    // 2. Envia para o backend
     try {
         const response = await fetch('/api/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome: name, email, senha: password })
+            body: JSON.stringify({ nome, email, senha })
         });
 
         const data = await response.json();
 
+        // 3a. Erro (ex: email já cadastrado): mostra abaixo do campo de email
         if (!response.ok) {
-            showError('register-email', data.message || 'Erro ao criar conta');
+            showError('register-email', data.message);
             return;
         }
 
+        // 3b. Cadastro ok: avisa o usuário e manda para o login
         showSuccessModal(
             'Cadastro realizado!',
             'Sua conta foi criada com sucesso. Faça login para continuar.',
@@ -294,22 +165,24 @@ document.getElementById('registerForm').addEventListener('submit', async functio
                 showLogin();
             }
         );
+
     } catch (err) {
         showError('register-email', 'Erro de conexão com o servidor');
     }
 });
 
-// Menu mobile toggle
+// ================================================
+// MODAL DE SUCESSO (usado só no cadastro)
+// ================================================
 
-document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-            menuToggle.setAttribute('aria-expanded', !isExpanded);
-        });
-    }
-});
+function showSuccessModal(title, message, callback) {
+    const modal = document.getElementById('success-modal');
+    document.getElementById('success-title').textContent = title;
+    document.getElementById('success-message').textContent = message;
+    modal.style.display = 'flex';
+
+    document.getElementById('close-modal').onclick = () => {
+        modal.style.display = 'none';
+        if (callback) callback();
+    };
+}
