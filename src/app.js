@@ -25,6 +25,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/api/auth', authRoutes);
 app.use('/api/reports', reportRoutes);
 
+app.get('/',            (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
 app.get('/login',        (req, res) => res.sendFile(path.join(__dirname, '../public/views/login.html')));
 app.get('/categorias',  (req, res) => res.sendFile(path.join(__dirname, '../public/views/categorias.html')));
 app.get('/estatisticas',(req, res) => res.sendFile(path.join(__dirname, '../public/views/estatisticas.html')));
