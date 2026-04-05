@@ -17,7 +17,10 @@ const userRepository = {
         // - 2: indenta o arquivo com 2 espaços, deixando legível para humanos
         fs.writeFileSync(DB_PATH, JSON.stringify(users, null, 2));
         return { newUser, message: 'Usuário criado com sucesso!' };
-    }
+    },
+    listUsers: () => {
+            return JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+        }
 };
 
 export default userRepository;

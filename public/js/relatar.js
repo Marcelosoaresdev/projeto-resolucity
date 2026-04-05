@@ -381,18 +381,35 @@ class FormValidator {
         return isValid;
     }
 
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
-        console.log('Tentativa de envio do formulário');
-        
-        if (this.validateAll()) {
-            console.log('Formulário validado com sucesso');
+
+        if (!this.validateAll()) return;
+
+        const body = {
+            nome:      this.fields.name.element.value.trim(),
+            cpf:       this.fields.cpf.element.value.trim(),
+            nascimento: this.fields.nascimento.element.value,
+            telefone:  this.fields.phone.element.value.trim(),
+            email:     this.fields.email.element.value.trim(),
+            categoria: this.fields.categoria.element.value,
+            endereco:  this.fields.endereco.element.value.trim(),
+            descricao: this.fields.message.element.value.trim()
+        };
+
+        try {
+            const res = await fetch('/api/reports', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            if (!res.ok) throw new Error('Erro ao enviar relato');
+
             this.showSuccessMessage();
-            
-            // Aqui faria o envio real do formulário
-            // this.form.submit();
-        } else {
-            console.log('Formulário contém erros de validação');
+        } catch (err) {
+            alert('Não foi possível enviar o relato. Tente novamente.');
+            console.error(err);
         }
     }
 
