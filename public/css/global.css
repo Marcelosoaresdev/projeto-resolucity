@@ -322,6 +322,29 @@ html {
 }
 
 /* ============================================
+   DAISYUI ACTIVE STATE — links do menu (navbar)
+   DaisyUI não aplica primary ao :active de <a> no menu,
+   apenas aos botões. Este override garante consistência.
+   ============================================ */
+
+.menu li a:active,
+.menu li button:active {
+  background-color: oklch(var(--p) / 1);
+  color: oklch(var(--pc) / 1);
+}
+
+/* ============================================
+   NAVBAR — evita flash de conteúdo errado
+   Os elementos ficam invisíveis até o JS checar
+   o estado de autenticação e renderizar o conteúdo correto.
+   ============================================ */
+
+#navbar-center,
+#navbar-auth {
+  visibility: hidden;
+}
+
+/* ============================================
    AOS OVERRIDES (smoother defaults)
    ============================================ */
 

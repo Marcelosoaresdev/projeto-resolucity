@@ -22,5 +22,11 @@
     "nome": "Teste de exclusao",
     "email": "123451@gmail.com",
     "senha": "3123131313213"
+  },
+  {
+    "id": 5,
+    "nome": "Marcelo",
+    "email": "marcelo@gmail.com",
+    "senha": "123456"
   }
 ]

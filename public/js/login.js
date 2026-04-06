@@ -91,8 +91,8 @@ document.getElementById('loginForm').addEventListener('submit', async function (
             return;
         }
 
-        // 3b. Login ok: redireciona para a página inicial
-        window.location.href = '/';
+        // 3b. Login ok: redireciona para meus relatos
+        window.location.href = '/meus-relatos';
 
     } catch (err) {
         showError('login-password', 'Erro de conexão com o servidor');
