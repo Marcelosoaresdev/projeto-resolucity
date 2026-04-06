@@ -443,6 +443,13 @@ class FormValidator {
 // Inicializar quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', () => {
     new FormValidator('contactForm');
+
+    const cat = new URLSearchParams(window.location.search).get('cat');
+    if (cat) {
+        const select = document.getElementById('categoria');
+        const match = [...select.options].find(o => o.value === cat || o.text === cat);
+        if (match) match.selected = true;
+    }
 });
 
 // Menu mobile toggle
