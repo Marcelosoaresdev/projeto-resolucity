@@ -11,6 +11,7 @@
   },
   {
     "id": 2,
+<<<<<<< HEAD
     "nome": "Caio",
     "email": "fnvexxx@gmail.com",
     "senha": "1e9cd0cba3b534ac2eecdd790d1aad9e:a298daf50a030c5629171bb0f796ef9c79645ea7fd452172490132e3f918d81c",
@@ -39,5 +40,14 @@
     "confirmationToken": "54e4740f-c2b1-407c-b202-51bf20284f56",
     "confirmationExpiresAt": "2026-09-21T23:06:42.576Z",
     "createdAt": "2026-09-20T23:06:42.617Z"
+=======
+    "nome": "Marcelo Henrique",
+    "email": "marcelohsoares142@gmail.com",
+    "senha": "c93d6bab49b0f0401b3cc0df7c862c48:2d99cbb6222353f26d2e6e0454303be93a0f502bdecf018eb27e597683401810",
+    "status": "ativo",
+    "confirmationToken": null,
+    "confirmationExpiresAt": null,
+    "createdAt": "2026-06-08T20:30:52.317Z"
+>>>>>>> 780adebcc51f7a730cc9e8e5155fe8ec3480d733
   }
 ]
