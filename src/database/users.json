@@ -8,5 +8,36 @@
     "confirmationToken": "df9c48cf-04a2-40d2-b893-2a9d16c22c78",
     "confirmationExpiresAt": "2026-06-09T02:32:22.475Z",
     "createdAt": "2026-06-08T02:32:22.503Z"
+  },
+  {
+    "id": 2,
+    "nome": "Caio",
+    "email": "fnvexxx@gmail.com",
+    "senha": "1e9cd0cba3b534ac2eecdd790d1aad9e:a298daf50a030c5629171bb0f796ef9c79645ea7fd452172490132e3f918d81c",
+    "status": "pendente_confirmacao",
+    "confirmationToken": "5a8ec7f5-74ed-4e27-8057-1e04859b284b",
+    "confirmationExpiresAt": "2026-08-12T22:52:42.352Z",
+    "createdAt": "2026-08-11T22:52:42.394Z"
+  },
+  {
+    "id": 3,
+    "nome": "Pedro Lucas",
+    "email": "plzinnxlucas@gmail.com",
+    "senha": "4c05bf968ce97ac67823ccfbe085b498:495e98134279530e9ef34b552ca77eab4992c39993155e0a94166fcc20eb8467",
+    "status": "pendente_confirmacao",
+    "confirmationToken": "bf74f9e0-ac9a-4416-9e04-947a6da2bb63",
+    "confirmationExpiresAt": "2026-08-17T01:39:07.486Z",
+    "createdAt": "2026-08-16T01:39:07.560Z"
+  },
+
+  {
+    "id": 5,
+    "nome": "Usuario Teste",
+    "email": "teste20260920200642@example.com",
+    "senha": "edec3b0d9ef7f93c50713bc4337284ec:401b295656a67c1694e38d4e6b525b3237db0f076bbe1d1f3dfa5304fd0d3b9d",
+    "status": "pendente_confirmacao",
+    "confirmationToken": "54e4740f-c2b1-407c-b202-51bf20284f56",
+    "confirmationExpiresAt": "2026-09-21T23:06:42.576Z",
+    "createdAt": "2026-09-20T23:06:42.617Z"
   }
 ]

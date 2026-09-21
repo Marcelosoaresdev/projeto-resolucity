@@ -1,31 +1,31 @@
 import reportRepository from '../repositories/reportRepository.js';
 
 const reportController = {
-    createReport(req, res) {
+    async createReport(req, res) {
         const { categoria, tipo, endereco, descricao, latitude, longitude } = req.body;
         const userId = req.session.userId;
 
         // O controller não sabe como o relatório é construído — responsabilidade da Factory
-        const result = reportRepository.createReport(
+        const result = await reportRepository.createReport(
             userId, categoria, tipo, endereco, descricao, latitude, longitude
         );
 
         res.status(201).json(result);
     },
 
-    listReports(req, res) {
-        const reports = reportRepository.listReports();
+    async listReports(req, res) {
+        const reports = await reportRepository.listReports();
         res.json(reports);
     },
 
-    listMyReports(req, res) {
-        const reports = reportRepository.listByUserId(req.session.userId);
+    async listMyReports(req, res) {
+        const reports = await reportRepository.listByUserId(req.session.userId);
         res.json(reports);
     },
 
-    getStats(req, res) {
+    async getStats(req, res) {
         const { period, start, end } = req.query;
-        const stats = reportRepository.getStats(period, start, end);
+        const stats = await reportRepository.getStats(period, start, end);
         res.json(stats);
     }
 };

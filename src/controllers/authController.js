@@ -94,7 +94,7 @@ const authController = {
         const { token, expiresAt } = generateConfirmationToken();
 
         // Cria usuário pendente
-        const result = userRepository.createUser(nome, email, senha, token, expiresAt);
+        const result = await userRepository.createUser(nome, email, senha, token, expiresAt);
 
         if (result.error) {
             return res.status(409).json({ message: result.error });
@@ -107,14 +107,14 @@ const authController = {
     },
 
     // GET /api/auth/confirm/:token
-    confirm(req, res) {
+    async confirm(req, res) {
         const { token } = req.params;
 
         if (!token) {
             return res.sendFile(path.join(__dirname, '../../public/views/email-confirmar-erro.html'));
         }
 
-        const result = userRepository.activateUser(token);
+        const result = await userRepository.activateUser(token);
 
         if (result.error) {
             return res.sendFile(path.join(__dirname, '../../public/views/email-confirmar-erro.html'));
@@ -124,14 +124,14 @@ const authController = {
     },
 
     // POST /api/auth/login
-    login(req, res) {
+    async login(req, res) {
         const { email, senha } = req.body;
 
         if (!email || !senha) {
             return res.status(400).json({ message: 'Preencha todos os campos' });
         }
 
-        const user = userRepository.findByEmail(email);
+        const user = await userRepository.findByEmail(email);
 
         if (!user) {
             return res.status(401).json({ message: 'E-mail ou senha incorretos' });
@@ -183,16 +183,16 @@ const authController = {
     },
 
     // GET /api/auth/profile
-    getProfile(req, res) {
+    async getProfile(req, res) {
         const userId = req.session.userId;
         if (!userId) return res.status(401).json({ message: 'Não autenticado' });
-        const user = userRepository.findById(userId);
+        const user = await userRepository.findById(userId);
         if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
         res.json({ id: user.id, nome: user.nome, email: user.email, cpf: user.cpf, nascimento: user.nascimento, telefone: user.telefone });
     },
 
     // PUT /api/auth/profile
-    updateProfile(req, res) {
+    async updateProfile(req, res) {
         const userId = req.session.userId;
         if (!userId) return res.status(401).json({ message: 'Não autenticado' });
         const { nome, cpf, nascimento, telefone, email } = req.body;
@@ -209,15 +209,15 @@ const authController = {
         const cpfError = authController.validateCpf(cpf);
         if (cpfError) return res.status(400).json({ message: cpfError });
 
-        const result = userRepository.updateUser(userId, { nome, cpf, nascimento, telefone, email });
+        const result = await userRepository.updateUser(userId, { nome, cpf, nascimento, telefone, email });
         if (result.error) return res.status(400).json({ message: result.error });
         req.session.userName = nome;
         res.json({ message: 'Perfil atualizado', user: result.user });
     },
 
     // GET /api/auth/
-    listUsers(req, res) {
-        res.json(userRepository.listUsers());
+    async listUsers(req, res) {
+        res.json(await userRepository.listUsers());
     }
 
 };

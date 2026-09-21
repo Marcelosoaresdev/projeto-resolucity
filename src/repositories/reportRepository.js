@@ -1,20 +1,10 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import userRepository from './userRepository.js';
 import reportFactory from '../factories/reportFactory.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const DB_PATH = path.join(__dirname, '../database/reports.json');
+import { query } from '../database/conexao.js';
 
 const reportRepository = {
-    createReport: (userId, categoria, tipo, endereco, descricao, latitude, longitude) => {
-        const reports = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
-        const maxId = reports.reduce((max, r) => Math.max(max, r.id || 0), 0);
-
-        //  Factory cria o objeto, repository só persiste
-        const newReport = reportFactory.create(categoria, {
+    async createReport(userId, categoria, tipo, endereco, descricao, latitude, longitude) {
+        const reportData = reportFactory.create(categoria, {
             userId,
             tipo,
             endereco,
@@ -22,36 +12,37 @@ const reportRepository = {
             latitude,
             longitude,
             categoria,
-        }, maxId);
-
-        reports.push(newReport);
-        fs.writeFileSync(DB_PATH, JSON.stringify(reports, null, 2));
+        }, null);
+        const result = await query(`
+            INSERT INTO reports ("userId", categoria, tipo, endereco, descricao, status, latitude, longitude)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            RETURNING *
+        `, [userId, reportData.categoria, reportData.tipo, reportData.endereco, reportData.descricao,
+            reportData.status, reportData.latitude, reportData.longitude]);
+        const savedReport = result.rows[0];
+        const protocolo = `RC-${savedReport.id}-${Date.now()}`;
+        const updated = await query('UPDATE reports SET protocolo = $1 WHERE id = $2 RETURNING *', [protocolo, savedReport.id]);
+        const newReport = updated.rows[0];
         return { newReport, message: 'Relato criado com sucesso!' };
     },
 
-    listReports: () => {
-        return JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+    async listReports() {
+        const { rows } = await query('SELECT * FROM reports ORDER BY id');
+        return rows;
     },
 
-    listByUserId: (userId) => {
-        const reports = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
-        const userReports = reports.filter(r => r.userId === userId);
-        // Anexar dados pessoais do usuário a cada relato
-        return userReports.map(r => {
-            const user = userRepository.findById(r.userId);
-            return {
-                ...r,
-                nome: user ? user.nome : '',
-                cpf: user ? user.cpf : '',
-                nascimento: user ? user.nascimento : '',
-                telefone: user ? user.telefone : '',
-                email: user ? user.email : ''
-            };
-        });
+    async listByUserId(userId) {
+        const { rows } = await query(`
+            SELECT r.*, u.nome, u.cpf, u.nascimento, u.telefone, u.email
+            FROM reports r LEFT JOIN users u ON u.id = r."userId"
+            WHERE r."userId" = $1 ORDER BY r.id
+        `, [userId]);
+        return rows;
     },
 
-    getStats: (period, startDate, endDate) => {
-        let reports = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+    async getStats(period, startDate, endDate) {
+        const result = await query('SELECT * FROM reports ORDER BY id');
+        let reports = result.rows;
 
         // Filtro por período
         if (period && period !== 'all') {

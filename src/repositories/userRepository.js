@@ -1,11 +1,5 @@
-import fs from 'fs';
 import crypto from 'crypto';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const DB_PATH = path.join(__dirname, '../database/users.json');
+import { query } from '../database/conexao.js';
 const SALT_LENGTH = 16;
 
 // Helper: gera salt aleatório
@@ -28,86 +22,66 @@ function verifyPassword(password, storedHash) {
 
 const userRepository = {
 
-    createUser: (nome, email, senha, confirmationToken, confirmationExpiresAt) => {
-        const users = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
-
-        if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-            return { error: 'Este e-mail já está cadastrado' };
-        }
-
+    async createUser(nome, email, senha, confirmationToken, confirmationExpiresAt) {
         const hashedPassword = hashPassword(senha, generateSalt());
-
-        // Gera próximo ID baseado no maior ID existente
-        const maxId = users.reduce((max, u) => Math.max(max, u.id || 0), 0);
-
-        const newUser = {
-            id: maxId + 1,
-            nome,
-            email,
-            senha: hashedPassword,
-            status: 'pendente_confirmacao',
-            confirmationToken,
-            confirmationExpiresAt,
-            createdAt: new Date().toISOString()
-        };
-
-        users.push(newUser);
-        fs.writeFileSync(DB_PATH, JSON.stringify(users, null, 2));
-        return { newUser, message: 'Cadastro realizado! Verifique seu email.' };
+        try {
+            const { rows } = await query(`
+                INSERT INTO users (nome, email, senha, status, "confirmationToken", "confirmationExpiresAt")
+                VALUES ($1, $2, $3, 'pendente_confirmacao', $4, $5)
+                RETURNING *
+            `, [nome, email, hashedPassword, confirmationToken, confirmationExpiresAt]);
+            return { newUser: rows[0], message: 'Cadastro realizado! Verifique seu email.' };
+        } catch (error) {
+            if (error.code === '23505') return { error: 'Este e-mail já está cadastrado' };
+            throw error;
+        }
     },
 
-    findByEmail: (email) => {
-        const users = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
-        return users.find(u => u.email.toLowerCase() === email.toLowerCase()) || null;
+    async findByEmail(email) {
+        const { rows } = await query('SELECT * FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1', [email]);
+        return rows[0] || null;
     },
 
-    findById: (id) => {
-        const users = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
-        return users.find(u => u.id === id) || null;
+    async findById(id) {
+        const { rows } = await query('SELECT * FROM users WHERE id = $1 LIMIT 1', [id]);
+        return rows[0] || null;
     },
 
-    findByConfirmationToken: (token) => {
-        const users = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
-        return users.find(u => u.confirmationToken === token) || null;
+    async findByConfirmationToken(token) {
+        const { rows } = await query('SELECT * FROM users WHERE "confirmationToken" = $1 LIMIT 1', [token]);
+        return rows[0] || null;
     },
 
-    activateUser: (token) => {
-        const users = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
-        const idx = users.findIndex(u => {
-            if (!u.confirmationToken) return false;
-            const tokenBuffer = Buffer.from(token);
-            const storedBuffer = Buffer.from(u.confirmationToken);
-            if (tokenBuffer.length !== storedBuffer.length) return false;
-            return crypto.timingSafeEqual(tokenBuffer, storedBuffer);
-        });
-        if (idx === -1) return { error: 'Link inválido.' };
-
-        const user = users[idx];
+    async activateUser(token) {
+        const { rows } = await query('SELECT * FROM users WHERE "confirmationToken" = $1 LIMIT 1', [token]);
+        const user = rows[0];
+        if (!user) return { error: 'Link inválido.' };
         if (user.status === 'ativo') return { error: 'Link já utilizado. Faça login normalmente.' };
         if (new Date(user.confirmationExpiresAt) < new Date()) return { error: 'Link expirado. Solicite um novo.' };
-
-        users[idx] = {
-            ...users[idx],
-            status: 'ativo',
-            confirmationToken: null,
-            confirmationExpiresAt: null
-        };
-
-        fs.writeFileSync(DB_PATH, JSON.stringify(users, null, 2));
-        return { user: users[idx], message: 'Conta ativada com sucesso!' };
+        const result = await query(`
+            UPDATE users SET status = 'ativo', "confirmationToken" = NULL, "confirmationExpiresAt" = NULL
+            WHERE id = $1 RETURNING *
+        `, [user.id]);
+        return { user: result.rows[0], message: 'Conta ativada com sucesso!' };
     },
 
-    updateUser: (id, data) => {
-        const users = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
-        const idx = users.findIndex(u => u.id === id);
-        if (idx === -1) return { error: 'Usuário não encontrado' };
-        users[idx] = { ...users[idx], ...data };
-        fs.writeFileSync(DB_PATH, JSON.stringify(users, null, 2));
-        return { user: users[idx] };
+    async updateUser(id, data) {
+        try {
+            const { rows } = await query(`
+                UPDATE users SET nome = $1, cpf = $2, nascimento = $3, telefone = $4, email = $5
+                WHERE id = $6 RETURNING *
+            `, [data.nome, data.cpf, data.nascimento, data.telefone, data.email, id]);
+            if (!rows[0]) return { error: 'Usuário não encontrado' };
+            return { user: rows[0] };
+        } catch (error) {
+            if (error.code === '23505') return { error: 'Este e-mail já está cadastrado' };
+            throw error;
+        }
     },
 
-    listUsers: () => {
-        return JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+    async listUsers() {
+        const { rows } = await query('SELECT * FROM users ORDER BY id');
+        return rows;
     }
 };
 
