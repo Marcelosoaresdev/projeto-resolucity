@@ -1,8 +1,9 @@
 {
   "type": "module",
-  "scripts": {
-    "start": "node server.js"
-  },
+ "scripts": {
+    "start": "node server.js",
+    "test": "poku"
+},
   "dependencies": {
     "brevo": "^1.0.0",
     "dotenv": "^17.4.2",
@@ -12,5 +13,8 @@
     "pg": "^8.23.0",
     "resend": "^6.12.4",
     "uuid": "^14.0.0"
+  },
+  "devDependencies": {
+    "poku": "^4.5.0"
   }
 }
