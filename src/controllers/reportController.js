@@ -47,11 +47,11 @@ const reportController = {
         res.json(result);
     },
 
-    deleteReport(req, res) {
+    async deleteReport(req, res) {
         const { id } = req.params;
         const userId = req.session.userId;
 
-        const result = reportRepository.deleteReport(parseInt(id), userId);
+        const result = await reportRepository.deleteReport(parseInt(id), userId);
 
         if (!result.success) {
             return res.status(403).json({ message: result.message });

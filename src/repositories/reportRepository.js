@@ -242,33 +242,19 @@ function createReportRepository(dbQuery = query) {
             };
         },
 
-        deleteReport: (id, userId) => {
-            const reports = JSON.parse(
-                fs.readFileSync(DB_PATH, 'utf-8')
-            );
+        async deleteReport(id, userId) {
+            const result = await dbQuery(`
+                DELETE FROM reports
+                WHERE id = $1 AND "userId" = $2
+                RETURNING id
+            `, [id, userId]);
 
-            const index = reports.findIndex(r => r.id === id);
-
-            if (index === -1) {
+            if (result.rows.length === 0) {
                 return {
                     success: false,
-                    message: 'Relato não encontrado.'
+                    message: 'Relato não encontrado ou você não tem permissão para excluí-lo.'
                 };
             }
-
-            if (reports[index].userId !== userId) {
-                return {
-                    success: false,
-                    message: 'Você não tem permissão para excluir este relato.'
-                };
-            }
-
-            const deleted = reports.splice(index, 1)[0];
-
-            fs.writeFileSync(
-                DB_PATH,
-                JSON.stringify(reports, null, 2)
-            );
 
             return {
                 success: true,
