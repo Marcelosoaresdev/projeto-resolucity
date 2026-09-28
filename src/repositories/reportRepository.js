@@ -205,39 +205,67 @@ function createReportRepository(dbQuery = query) {
             };
         },
 
-        updateReport: (id, userId, updates) => {
-            const reports = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
-
-            const index = reports.findIndex(r => r.id === id);
-
-            if (index === -1) {
-                return {
-                    success: false,
-                    message: 'Relato não encontrado.'
-                };
-            }
-
-            if (reports[index].userId !== userId) {
-                return {
-                    success: false,
-                    message: 'Você não tem permissão para editar este relato.'
-                };
-            }
-
-            reports[index] = {
-                ...reports[index],
-                ...updates,
-                atualizadoEm: new Date().toISOString()
-            };
-
-            fs.writeFileSync(
-                DB_PATH,
-                JSON.stringify(reports, null, 2)
+        async updateReport(id, userId, updates) {
+            const existing = await dbQuery(
+                `SELECT id FROM reports
+                 WHERE id = $1 AND "userId" = $2`,
+                [id, userId]
             );
+
+            if (existing.rows.length === 0) {
+                return {
+                    success: false,
+                    message: 'Relato não encontrado ou você não tem permissão.'
+                };
+            }
+
+            const allowedFields = [
+                'categoria',
+                'tipo',
+                'endereco',
+                'descricao',
+                'latitude',
+                'longitude',
+                'status'
+            ];
+
+            const fields = allowedFields.filter(
+                field => updates[field] !== undefined
+            );
+
+            if (fields.length === 0) {
+                return {
+                    success: false,
+                    message: 'Nenhum campo válido para atualização.'
+                };
+            }
+
+            const setClause = fields
+                .map((field, index) => `"${field}" = $${index + 1}`)
+                .join(', ');
+
+            const values = fields.map(field => updates[field]);
+            values.push(id, userId);
+
+            const result = await dbQuery(
+                `UPDATE reports
+                 SET ${setClause}
+                 WHERE id = $${fields.length + 1}
+                 AND "userId" = $${fields.length + 2}
+                 RETURNING *`,
+                values
+            );
+
+            if (result.rows.length === 0) {
+                return {
+                    success: false,
+                    message: 'Relato não encontrado ou você não tem permissão.'
+                };
+            }
 
             return {
                 success: true,
-                report: reports[index],
+                report: result.rows[0],
                 message: 'Relato atualizado com sucesso!'
             };
         },

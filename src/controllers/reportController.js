@@ -29,13 +29,22 @@ const reportController = {
         res.json(stats);
     },
 
-    updateReport(req, res) {
+    async updateReport(req, res) {
         const { id } = req.params;
         const userId = req.session.userId;
-        const { categoria, tipo, endereco, descricao, latitude, longitude, status } = req.body;
 
-        const result = reportRepository.updateReport(
-            parseInt(id),
+        const {
+            categoria,
+            tipo,
+            endereco,
+            descricao,
+            latitude,
+            longitude,
+            status
+        } = req.body;
+
+        const result = await reportRepository.updateReport(
+            parseInt(id, 10),
             userId,
             { categoria, tipo, endereco, descricao, latitude, longitude, status }
         );
@@ -44,7 +53,7 @@ const reportController = {
             return res.status(403).json({ message: result.message });
         }
 
-        res.json(result);
+        return res.json(result);
     },
 
     async deleteReport(req, res) {
