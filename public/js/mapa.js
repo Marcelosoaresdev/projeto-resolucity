@@ -74,8 +74,6 @@ map.addLayer(markers);
 let allReports = [];
 let currentCategoria = '';
 let currentStatus = 'todos';
-let currentPage = 1;
-const pageSize = 3;
 
 // Atualizar contadores
 function updateCounts() {
@@ -148,19 +146,13 @@ function renderMarkers() {
 // Carregar relatórios
 async function loadReports() {
     try {
-        const res = await fetch(`/api/reports?page=${currentPage}&limit=${pageSize}`);
+        const res = await fetch('/api/reports?limit=100');
         const payload = await res.json();
         if (!res.ok) {
             throw new Error(payload.message || 'Falha ao carregar relatos.');
         }
 
         allReports = Array.isArray(payload) ? payload : payload.items || [];
-        updatePagination(payload.pagination || {
-            page: 1,
-            limit: allReports.length,
-            total: allReports.length,
-            totalPages: 1
-        });
         updateCounts();
         renderMarkers();
 
@@ -176,28 +168,6 @@ async function loadReports() {
         console.error('Erro ao carregar relatórios:', err);
     }
 }
-
-function updatePagination(pagination) {
-    const pageInfo = document.getElementById('map-page-info');
-    const previous = document.getElementById('map-prev');
-    const next = document.getElementById('map-next');
-
-    pageInfo.textContent = `Página ${pagination.page} de ${Math.max(pagination.totalPages, 1)} (${pagination.total} registros)`;
-    previous.disabled = pagination.page <= 1;
-    next.disabled = pagination.page >= pagination.totalPages;
-}
-
-document.getElementById('map-prev').addEventListener('click', () => {
-    if (currentPage > 1) {
-        currentPage--;
-        loadReports();
-    }
-});
-
-document.getElementById('map-next').addEventListener('click', () => {
-    currentPage++;
-    loadReports();
-});
 
 // Filtro por status
 document.querySelectorAll('[data-filter]').forEach(btn => {

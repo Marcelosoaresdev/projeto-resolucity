@@ -576,6 +576,7 @@ async function loadRelatos() {
         function render(filtro) {
             filtroAtivo = filtro;
             const lista = filtro === 'todos' ? allReports : allReports.filter(r => r.status === filtro);
+            document.getElementById('reports-pagination').classList.toggle('hidden', lista.length === 0);
             counter.textContent = `${lista.length} relato${lista.length !== 1 ? 's' : ''}`;
             grid.innerHTML = lista.length
                 ? lista.map(renderCard).join('')
