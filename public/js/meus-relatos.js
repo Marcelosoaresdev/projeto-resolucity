@@ -1,4 +1,6 @@
 let allReports = [];
+let currentPage = 1;
+const pageSize = 3;
 
 const STATUS_CONFIG = {
     pendente:      { label: 'Pendente',     badge: 'badge-warning' },
@@ -545,10 +547,21 @@ async function loadRelatos() {
     const skeleton = document.getElementById('relatos-skeleton');
 
     try {
-        const res = await fetch('/api/reports/mine');
+        const res = await fetch(`/api/reports/mine?page=${currentPage}&limit=${pageSize}`);
         if (res.status === 401) { window.location.href = '/login'; return; }
 
-        allReports = await res.json();
+        const payload = await res.json();
+        if (!res.ok) {
+            throw new Error(payload.message || 'Falha ao carregar relatos.');
+        }
+
+        allReports = Array.isArray(payload) ? payload : payload.items || [];
+        updatePagination(payload.pagination || {
+            page: 1,
+            limit: allReports.length,
+            total: allReports.length,
+            totalPages: 1
+        });
         skeleton.classList.add('hidden');
         grid.classList.remove('hidden');
 
@@ -587,5 +600,27 @@ async function loadRelatos() {
         console.error(err);
     }
 }
+
+function updatePagination(pagination) {
+    const pageInfo = document.getElementById('reports-page-info');
+    const previous = document.getElementById('reports-prev');
+    const next = document.getElementById('reports-next');
+
+    pageInfo.textContent = `Página ${pagination.page} de ${Math.max(pagination.totalPages, 1)} (${pagination.total} relatos)`;
+    previous.disabled = pagination.page <= 1;
+    next.disabled = pagination.page >= pagination.totalPages;
+}
+
+document.getElementById('reports-prev').addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        loadRelatos();
+    }
+});
+
+document.getElementById('reports-next').addEventListener('click', () => {
+    currentPage++;
+    loadRelatos();
+});
 
 document.addEventListener('DOMContentLoaded', loadRelatos);

@@ -133,12 +133,27 @@ function createUserRepository(dbQuery = query) {
             }
         },
 
-        async listUsers() {
-            const { rows } = await dbQuery(
-                'SELECT * FROM users ORDER BY id'
-            );
+        async listUsers(page = 1, limit = 10) {
+            const offset = (page - 1) * limit;
+            const [{ rows: countRows }, { rows }] = await Promise.all([
+                dbQuery('SELECT COUNT(*)::int AS total FROM users'),
+                dbQuery(
+                    'SELECT * FROM users ORDER BY id LIMIT $1 OFFSET $2',
+                    [limit, offset]
+                )
+            ]);
 
-            return rows;
+            const total = countRows[0]?.total || 0;
+
+            return {
+                items: rows,
+                pagination: {
+                    page,
+                    limit,
+                    total,
+                    totalPages: Math.ceil(total / limit)
+                }
+            };
         }
     };
 }

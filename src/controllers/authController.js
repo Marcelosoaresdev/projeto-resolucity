@@ -225,7 +225,9 @@ const authController = {
 
     // GET /api/auth/
     async listUsers(req, res) {
-        res.json(await userRepository.listUsers());
+        const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+        const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 10, 1), 100);
+        res.json(await userRepository.listUsers(page, limit));
     }
 
 };

@@ -48,22 +48,54 @@ function createReportRepository(dbQuery = query) {
             };
         },
 
-        async listReports() {
-            const { rows } = await dbQuery(
-                'SELECT * FROM reports ORDER BY id'
-            );
+        async listReports(page = 1, limit = 10) {
+            const offset = (page - 1) * limit;
+            const [{ rows: countRows }, { rows }] = await Promise.all([
+                dbQuery('SELECT COUNT(*)::int AS total FROM reports'),
+                dbQuery(
+                    'SELECT * FROM reports ORDER BY id LIMIT $1 OFFSET $2',
+                    [limit, offset]
+                )
+            ]);
 
-            return rows;
+            const total = countRows[0]?.total || 0;
+
+            return {
+                items: rows,
+                pagination: {
+                    page,
+                    limit,
+                    total,
+                    totalPages: Math.ceil(total / limit)
+                }
+            };
         },
 
-        async listByUserId(userId) {
-            const { rows } = await dbQuery(`
-                SELECT r.*, u.nome, u.cpf, u.nascimento, u.telefone, u.email
-                FROM reports r LEFT JOIN users u ON u.id = r."userId"
-                WHERE r."userId" = $1 ORDER BY r.id
-            `, [userId]);
+        async listByUserId(userId, page = 1, limit = 10) {
+            const offset = (page - 1) * limit;
+            const [{ rows: countRows }, { rows }] = await Promise.all([
+                dbQuery(
+                    'SELECT COUNT(*)::int AS total FROM reports WHERE "userId" = $1',
+                    [userId]
+                ),
+                dbQuery(`
+                    SELECT r.*, u.nome, u.cpf, u.nascimento, u.telefone, u.email
+                    FROM reports r LEFT JOIN users u ON u.id = r."userId"
+                    WHERE r."userId" = $1 ORDER BY r.id LIMIT $2 OFFSET $3
+                `, [userId, limit, offset])
+            ]);
 
-            return rows;
+            const total = countRows[0]?.total || 0;
+
+            return {
+                items: rows,
+                pagination: {
+                    page,
+                    limit,
+                    total,
+                    totalPages: Math.ceil(total / limit)
+                }
+            };
         },
 
         async getStats(period, startDate, endDate) {

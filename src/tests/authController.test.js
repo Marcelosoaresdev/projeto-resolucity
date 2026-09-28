@@ -329,7 +329,12 @@ describe('Auth Controller - listUsers', async () => {
         }
     ];
 
-    userRepository.listUsers = async () => fakeUsers;
+    const paginatedUsers = {
+        items: fakeUsers,
+        pagination: { page: 1, limit: 10, total: 2, totalPages: 1 }
+    };
+
+    userRepository.listUsers = async () => paginatedUsers;
 
     const res = {
         body: null,
@@ -338,9 +343,9 @@ describe('Auth Controller - listUsers', async () => {
         }
     };
 
-    await authController.listUsers({}, res);
+    await authController.listUsers({ query: {} }, res);
 
-    assert.deepStrictEqual(res.body, fakeUsers);
+    assert.deepStrictEqual(res.body, paginatedUsers);
 });
 
 describe('Auth Controller - logout', () => {

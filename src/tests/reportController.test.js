@@ -50,7 +50,12 @@ describe('Report Controller - listReports', async () => {
         { id: 2, categoria: 'Iluminação' }
     ];
 
-    reportRepository.listReports = async () => fakeReports;
+    const paginatedReports = {
+        items: fakeReports,
+        pagination: { page: 1, limit: 10, total: 2, totalPages: 1 }
+    };
+
+    reportRepository.listReports = async () => paginatedReports;
 
     const res = {
         body: null,
@@ -59,9 +64,9 @@ describe('Report Controller - listReports', async () => {
         }
     };
 
-    await reportController.listReports({}, res);
+    await reportController.listReports({ query: {} }, res);
 
-    assert.deepStrictEqual(res.body, fakeReports);
+    assert.deepStrictEqual(res.body, paginatedReports);
 });
 
 describe('Report Controller - listMyReports', async () => {
@@ -69,7 +74,12 @@ describe('Report Controller - listMyReports', async () => {
         { id: 1, userId: 10, categoria: 'Buraco' }
     ];
 
-    reportRepository.listByUserId = async () => fakeReports;
+    const paginatedReports = {
+        items: fakeReports,
+        pagination: { page: 1, limit: 10, total: 1, totalPages: 1 }
+    };
+
+    reportRepository.listByUserId = async () => paginatedReports;
 
     const res = {
         body: null,
@@ -79,11 +89,11 @@ describe('Report Controller - listMyReports', async () => {
     };
 
     await reportController.listMyReports(
-        { session: { userId: 10 } },
+        { session: { userId: 10 }, query: {} },
         res
     );
 
-    assert.deepStrictEqual(res.body, fakeReports);
+    assert.deepStrictEqual(res.body, paginatedReports);
 });
 
 describe('Report Controller - getStats', async () => {
@@ -116,7 +126,7 @@ describe('Report Controller - getStats', async () => {
     assert.deepStrictEqual(res.body, fakeStats);
 });
 
-describe('Report Controller - updateReport', () => {
+describe('Report Controller - updateReport', async () => {
     const fakeResult = {
         success: true,
         message: 'Relato atualizado com sucesso!'
@@ -150,13 +160,13 @@ describe('Report Controller - updateReport', () => {
         }
     };
 
-    reportController.updateReport(req, res);
+    await reportController.updateReport(req, res);
 
     assert.strictEqual(res.statusCode, null);
     assert.deepStrictEqual(res.body, fakeResult);
 });
 
-describe('Report Controller - updateReport erro', () => {
+describe('Report Controller - updateReport erro', async () => {
     reportRepository.updateReport = () => ({
         success: false,
         message: 'Relato não encontrado'
@@ -180,7 +190,7 @@ describe('Report Controller - updateReport erro', () => {
         }
     };
 
-    reportController.updateReport(req, res);
+    await reportController.updateReport(req, res);
 
     assert.strictEqual(res.statusCode, 403);
     assert.deepStrictEqual(res.body, {
@@ -188,7 +198,7 @@ describe('Report Controller - updateReport erro', () => {
     });
 });
 
-describe('Report Controller - deleteReport', () => {
+describe('Report Controller - deleteReport', async () => {
     const fakeResult = {
         success: true,
         message: 'Relato excluído com sucesso!'
@@ -213,13 +223,13 @@ describe('Report Controller - deleteReport', () => {
         }
     };
 
-    reportController.deleteReport(req, res);
+    await reportController.deleteReport(req, res);
 
     assert.strictEqual(res.statusCode, null);
     assert.deepStrictEqual(res.body, fakeResult);
 });
 
-describe('Report Controller - deleteReport erro', () => {
+describe('Report Controller - deleteReport erro', async () => {
     reportRepository.deleteReport = () => ({
         success: false,
         message: 'Relato não encontrado'
@@ -242,7 +252,7 @@ describe('Report Controller - deleteReport erro', () => {
         }
     };
 
-    reportController.deleteReport(req, res);
+    await reportController.deleteReport(req, res);
 
     assert.strictEqual(res.statusCode, 403);
     assert.deepStrictEqual(res.body, {

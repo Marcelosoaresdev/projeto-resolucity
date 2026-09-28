@@ -14,12 +14,18 @@ const reportController = {
     },
 
     async listReports(req, res) {
-        const reports = await reportRepository.listReports();
+        const { page, limit } = parsePagination(req.query);
+        const reports = await reportRepository.listReports(page, limit);
         res.json(reports);
     },
 
     async listMyReports(req, res) {
-        const reports = await reportRepository.listByUserId(req.session.userId);
+        const { page, limit } = parsePagination(req.query);
+        const reports = await reportRepository.listByUserId(
+            req.session.userId,
+            page,
+            limit
+        );
         res.json(reports);
     },
 
@@ -71,3 +77,10 @@ const reportController = {
 };
 
 export default reportController;
+
+function parsePagination(query = {}) {
+    const page = Math.max(parseInt(query.page, 10) || 1, 1);
+    const limit = Math.min(Math.max(parseInt(query.limit, 10) || 10, 1), 100);
+
+    return { page, limit };
+}

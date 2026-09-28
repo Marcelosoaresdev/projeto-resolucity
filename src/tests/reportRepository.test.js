@@ -17,15 +17,18 @@ describe('Report Repository - listReports', async () => {
         }
     ];
 
-    const fakeQuery = async () => ({
-        rows: fakeReports
+    const fakeQuery = async (sql) => ({
+        rows: sql.includes('COUNT') ? [{ total: fakeReports.length }] : fakeReports
     });
 
     const repository = createReportRepository(fakeQuery);
 
     const reports = await repository.listReports();
 
-    assert.deepStrictEqual(reports, fakeReports);
+    assert.deepStrictEqual(reports, {
+        items: fakeReports,
+        pagination: { page: 1, limit: 10, total: 2, totalPages: 1 }
+    });
 });
 
 describe('Report Repository - listByUserId', async () => {
@@ -44,15 +47,18 @@ describe('Report Repository - listByUserId', async () => {
         }
     ];
 
-    const fakeQuery = async () => ({
-        rows: fakeReports
+    const fakeQuery = async (sql) => ({
+        rows: sql.includes('COUNT') ? [{ total: fakeReports.length }] : fakeReports
     });
 
     const repository = createReportRepository(fakeQuery);
 
     const reports = await repository.listByUserId(10);
 
-    assert.deepStrictEqual(reports, fakeReports);
+    assert.deepStrictEqual(reports, {
+        items: fakeReports,
+        pagination: { page: 1, limit: 10, total: 2, totalPages: 1 }
+    });
 });
 
 describe('Report Repository - createReport', async () => {
