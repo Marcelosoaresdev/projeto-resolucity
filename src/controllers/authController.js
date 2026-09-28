@@ -100,8 +100,9 @@ const authController = {
             return res.status(409).json({ message: result.error });
         }
 
-        // Observers reagem ao evento sem acoplar o controller aos detalhes de envio
-        eventBus.publish('user:registered', { email, nome, token });
+        // Em serverless (Vercel) promises em background são mortas após o response,
+        // então aguardamos o envio do email antes de retornar para garantir que ele chegue.
+        await eventBus.publish('user:registered', { email, nome, token });
 
         res.status(201).json({ message: 'Cadastro realizado! Verifique seu email.', userId: result.newUser.id });
     },
@@ -164,7 +165,14 @@ const authController = {
         req.session.userId = user.id;
         req.session.userName = user.nome;
 
-        res.json({ message: 'Login realizado com sucesso', user: { id: user.id, nome: user.nome, email: user.email } });
+        // Salva a sessão antes de responder para que o Set-Cookie seja incluído no response.
+        req.session.save((err) => {
+            if (err) {
+                console.error('Erro ao salvar sessão:', err);
+                return res.status(500).json({ message: 'Erro ao iniciar sessão' });
+            }
+            res.json({ message: 'Login realizado com sucesso', user: { id: user.id, nome: user.nome, email: user.email } });
+        });
     },
 
     // POST /api/auth/logout

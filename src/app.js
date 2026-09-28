@@ -2,6 +2,8 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import session from 'express-session';
+import PgSession from 'connect-pg-simple';
+import { pool } from './database/conexao.js';
 import authRoutes from './routes/authRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
 import statsRoutes from './routes/statsRoutes.js';
@@ -13,14 +15,27 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Confia no proxy do Vercel para que req.secure e o X-Forwarded-Proto funcionem corretamente.
+// Sem isso, express-session não seta cookies Secure mesmo em conexões HTTPS.
+app.set('trust proxy', 1);
+
 app.use(express.json());
 
-// Sessão: mantém o usuário logado entre requisições
+// Store de sessão persistente no Postgres (Neon).
+// Necessário em serverless (Vercel) porque MemoryStore perde a sessão a cada nova instância.
+const PgSessionStore = PgSession(session);
+const sessionStore = new PgSessionStore({
+    pool,
+    tableName: 'session',
+    createTableIfMissing: true
+});
+
 app.use(session({
-    secret: 'resolucity-secret',  // chave para assinar o cookie (trocar em produção)
-    resave: false,                // não salva a sessão se ela não foi modificada
-    saveUninitialized: false,     // não cria sessão para quem não está logado
-    cookie: { httpOnly: true }    // cookie não acessível via JavaScript no browser
+    store: sessionStore,
+    secret: process.env.SESSION_SECRET || 'resolucity-secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' }
 }));
 app.use(express.static(path.join(__dirname, '../')));
 app.use(express.static(path.join(__dirname, '../public')));

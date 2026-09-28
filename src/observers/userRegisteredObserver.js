@@ -18,7 +18,7 @@ function registerUserRegisteredObserver() {
         try {
             await sendConfirmationEmail(email, nome, token);
         } catch (error) {
-            console.error('Erro ao enviar email de confirmação:', error);
+            console.error('Erro ao enviar email de confirmação:', error?.message || error);
         }
     });
 }

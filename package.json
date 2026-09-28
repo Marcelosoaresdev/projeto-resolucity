@@ -1,11 +1,12 @@
 {
   "type": "module",
- "scripts": {
+  "scripts": {
     "start": "node server.js",
     "test": "poku"
-},
+  },
   "dependencies": {
     "brevo": "^1.0.0",
+    "connect-pg-simple": "^10.0.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
