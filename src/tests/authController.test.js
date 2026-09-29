@@ -88,7 +88,12 @@ describe('Auth Controller - login', async () => {
             email: 'joao@email.com',
             senha: '12345678'
         },
-        session: {}
+        //session: {}
+        session: {
+    save(callback) {
+        callback(null);
+    }
+}
     };
 
     const res = createResponse();
